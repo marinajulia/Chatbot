@@ -1,2 +1,15 @@
+# Environment variables
 .env
 Chatbot/.env
+
+# Virtual environment
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# IDE
+.vscode/
