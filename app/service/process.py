@@ -1,3 +1,5 @@
+from app.database.manipulations import ia_manipulations
+
 
 def process_webhook_data(data:dict):
     """
@@ -8,7 +10,7 @@ def process_webhook_data(data:dict):
         ia_phone = data["sender"].split("@")[0]
         ia_name = data["instance"]
 
-        # Pesquisae em nosso database qual IA direcionar
-        print(data)
+        # Pesquisar em nosso database qual IA direcionar
+        ia_infos = ia_manipulations.filter_ia(ia_phone)
     except Exception as ex:
         print(f"ERROR in process: {ex}")

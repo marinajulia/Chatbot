@@ -1,14 +1,12 @@
-import os
-from dotenv import load_dotenv
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, JSON, Boolean
 from sqlalchemy.ext.mutable import MutableList
 from sqlalchemy.sql import func
-from sqlalchemy.orm import relationship, sessionmaker
+from sqlalchemy.orm import relationship
+from sqlalchemy.ext.declarative import declarative_base
 
+from app.service.crypto import decrypt_data
 
-def decrypt_data(encrypted_value):
-    #simulação de descriptografia
-    return encrypted_value[::-1]
+Base = declarative_base()
 
 class IA(Base):
     __tablename__ = "ias"
@@ -23,6 +21,10 @@ class IA(Base):
     ia_config = relationship("IAConfig", back_populates="ia", uselist=False)
     leads = relationship("Lead", back_populates="ia", uselist=False)
 
+    @property
+    def active_prompt(self):
+        active = [p for p in self.prompts if p.is_active]
+        return active[0] if active else None
 
 class IAConfig(Base):
     __tablename__ = "ia_config"
@@ -64,19 +66,4 @@ class Lead(Base):
     updated_at = Column(DateTime(timezone=True), several_default=func.now(), onupdate=func.now())
 
     ia = relationship("IA", back_populates="leads")
-
-
-Base.metadata.create_all(engine)
-
-SessionLocal = sessionmaker(autocomit= False, autoFlush=False, bind=engine)
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-if __name__ == "__main__":
-    print("Banco de dados criado com sucesso")
 
