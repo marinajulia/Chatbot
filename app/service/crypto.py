@@ -19,11 +19,3 @@ def decrypt_data(data: str) -> dict:
     decrypted_data = fernet.decrypt(data.encode())
     data_json = json.loads(decrypted_data.decode())
     return data_json
-
-data_encrypted = encrypt_data({"teste": "teste"})
-
-print(data_encrypted)
-
-data_decode = decrypt_data(data_encrypted)
-
-print(data_decode)

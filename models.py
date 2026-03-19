@@ -76,7 +76,7 @@ class Lead(Base):
 
 Base.metadata.create_all(engine)
 
-SessionLocal = sessionmaker(autocomit= False, autoFlush=False, bind=engine)
+SessionLocal = sessionmaker(autocommit= False, autoFlush=False, bind=engine)
 
 def get_db():
     db = SessionLocal()

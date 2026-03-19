@@ -3,7 +3,7 @@ from app.service.process import process_webhook_data
 
 router = APIRouter()
 
-@router.post("/webhook", status_code= status.HTTP_200_OK)
+@router.post("/webhook", status_code=status.HTTP_200_OK)
 
 async def receive_webhook(data: dict, background_tasks: BackgroundTasks):
     """
@@ -14,6 +14,6 @@ async def receive_webhook(data: dict, background_tasks: BackgroundTasks):
         background_tasks.add_task(process_webhook_data, data)
         return {"message": "Webhook received. Processing in background."}
     except Exception as ex:
-        print(f"ERROR: {ex}")
+        print(f"ERROR: {ex}", flush=True)
         return {"message": "Error"}
     
