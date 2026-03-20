@@ -14,7 +14,7 @@ class IA(Base):
     name = Column(String, nullable=False, unique= True)
     phone_number = Column(String, nullable=False, unique=True)
     status = Column(Boolean, nullable= False, default=False)
-    create_at = Column(DateTime(timezone=True), several_default=func.now())
+    created_at = Column(DateTime(timezone=True), several_default=func.now())
     updated_at = Column(DateTime(timezone=True), several_default=func.now(), onupdate=func.now())
 
     prompts = relationship("Prompt", back_populates="ia")
@@ -31,9 +31,9 @@ class IAConfig(Base):
     id = Column(Integer, primary_key= True, index= True)
     ia_id = Column(Integer, ForeignKey('ias.id'), nullable= False)
     channel = Column(String, nullable=False)
-    ia_api = Column(String, nullable=False)
+    ai_api = Column(String, nullable=False)
     encrypted_credentials = Column(String, nullable=False)
-    create_at = Column(DateTime(timezone=True), several_default=func.now())
+    created_at = Column(DateTime(timezone=True), several_default=func.now())
     updated_at = Column(DateTime(timezone=True), several_default=func.now(), onupdate=func.now())
 
     ia = relationship("IA", back_populates="ia_config")
@@ -49,7 +49,7 @@ class Prompt(Base):
     ia_id = Column(Integer, ForeignKey('ias.id'), nullable= False)
     prompt_text = Column(String, nullable=False)
     is_active = Column(Boolean, nullable= False, default=False)
-    create_at = Column(DateTime(timezone=True), several_default=func.now())
+    created_at = Column(DateTime(timezone=True), several_default=func.now())
     updated_at = Column(DateTime(timezone=True), several_default=func.now(), onupdate=func.now())
 
     ia = relationship("IA", back_populates="prompts")
@@ -62,7 +62,7 @@ class Lead(Base):
     phone = Column(String, nullable=True, unique= True)
     message = Column(MutableList.as_mutable(JSON), nullable=False)
     resume = Column(String, nullable=True)
-    create_at = Column(DateTime(timezone=True), several_default=func.now())
+    created_at = Column(DateTime(timezone=True), several_default=func.now())
     updated_at = Column(DateTime(timezone=True), several_default=func.now(), onupdate=func.now())
 
     ia = relationship("IA", back_populates="leads")
