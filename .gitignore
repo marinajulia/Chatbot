@@ -13,3 +13,4 @@ __pycache__/
 
 # IDE
 .vscode/
+app/service/__pycache__/process.cpython-314.pyc
