@@ -4,3 +4,4 @@ python-dotenv
 sqlalchemy
 cryptography
 psycopg2-binary
+langchain

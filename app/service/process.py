@@ -1,4 +1,8 @@
-from app.database.manipulations import ia_manipulations
+import random
+import time
+
+from app.database.manipulations import ia_manipulations, lead_manipulations
+from app.service.queue_manager import get_phone_lock
 
 
 def process_webhook_data(data:dict):
@@ -33,7 +37,18 @@ def process_webhook_data(data:dict):
         lead_name = data["data"]["pushName"]
         lead_phone = data["data"]["key"]["remoteJid"].split("@")[0]
 
-        print(f"Lead info - Name: {lead_name}, Phone: {lead_phone}, Message: {message_content}", flush=True)
+        lock = get_phone_lock(lead_phone)
+
+        with lock:
+            message_atual_lead = {
+                "role": "user",
+                "name": lead_name,
+                "content": message_content
+            }
+
+            lead_db = lead_manipulations.filter_lead(lead_phone, message_atual_lead)
+            if not lead_db:
+                lead_db = lead_manipulations.new_lead(ia_infos.id, lead_name, lead_phone, message_atual_lead)
 
     except Exception as ex:
         print(f"ERROR in process: {ex}", flush=True)
