@@ -44,7 +44,7 @@ def new_lead(ia_id:int, name:str, phone:str, message:list) -> Lead:
             ia_id=ia_id,
             name=name,
             phone=phone,
-            message=[message]
+            message=message
         )
 
         db.add(lead)
