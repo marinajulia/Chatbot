@@ -51,4 +51,4 @@ class IAresponse:
             return ""
 
     def generate_resume(self, history_message:list=[]) -> str:
-        ...
+        

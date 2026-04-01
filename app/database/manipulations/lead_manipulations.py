@@ -32,6 +32,40 @@ def filter_lead(phone:str, message:dict) -> Lead:
         db.close()
     return None
 
+def update_lead(lead_id:int, message:list, resume:str) -> bool:
+    db = init_db()
+
+    if not db:
+        raise(Exception("Database connection failed"))
+    
+    try:
+        lead = db.query(Lead).filter(Lead.lead_id == lead_id).first()
+        if not lead:
+            print(f"No lead found for lead id: {lead_id}", flush=True)
+            return None
+        
+        if resume:
+            lead.resume = resume
+
+        historico = lead.message
+        if not historico:
+            historico = []
+
+        historico.append(message)
+
+        lead.message = historico
+        db.commit()
+        db.refresh(lead)
+        print(f"Lead updated successfully for phone number: {lead.name}-{lead.phone}", flush=True)
+
+        return True
+    except Exception as ex:
+        print(f"ERROR in filter_lead: {ex}", flush=True)
+    
+    finally:
+        db.close()
+    return False
+
 
 def new_lead(ia_id:int, name:str, phone:str, message:list) -> Lead:
     db = init_db()

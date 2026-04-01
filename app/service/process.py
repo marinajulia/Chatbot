@@ -96,6 +96,24 @@ def process_webhook_data(data:dict):
                 
             print(f"Total de interações com o lead {lead_phone}: {total_interacoes}", flush=True)
 
+            for n in range(20,26):
+                if total_interacoes % n == 0:
+                    print(f"Gerando resumo para o lead {lead_phone} após {total_interacoes} interações", flush=True)
+                    resumo = llm.generate_resume(historico)
+                    break
+
+            #Atualizando no banco de dados
+            message_ia ={
+                "role": "assistant",
+                "content": response_lead
+            }
+
+            lead_updated = lead_manipulations.update_lead(lead_db.id, message_ia, resumo)
+
+            if not lead_updated:
+                raise(Exception(f"Falha ao atualizar lead {lead_phone} no banco de dados"))
+
+            print(f"Processamento concluído para o lead {lead_phone}", flush=True)
 
     except Exception as ex:
         print(f"ERROR in process: {ex}", flush=True)
