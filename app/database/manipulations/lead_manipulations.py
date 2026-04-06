@@ -39,7 +39,7 @@ def update_lead(lead_id:int, message:list, resume:str) -> bool:
         raise(Exception("Database connection failed"))
     
     try:
-        lead = db.query(Lead).filter(Lead.lead_id == lead_id).first()
+        lead = db.query(Lead).filter(Lead.id == lead_id).first()
         if not lead:
             print(f"No lead found for lead id: {lead_id}", flush=True)
             return None

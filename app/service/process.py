@@ -96,7 +96,7 @@ def process_webhook_data(data:dict):
                 
             print(f"Total de interações com o lead {lead_phone}: {total_interacoes}", flush=True)
 
-            for n in range(20,26):
+            for n in range(2,10):
                 if total_interacoes % n == 0:
                     print(f"Gerando resumo para o lead {lead_phone} após {total_interacoes} interações", flush=True)
                     resumo = llm.generate_resume(historico)
