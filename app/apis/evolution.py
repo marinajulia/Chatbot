@@ -113,7 +113,7 @@ def processar_audio(instance:str, message_id:str, ia_infos) -> str:
     except Exception as ex:
         print(f"Erro ao transcrever audio: {ex}")
 
-    # Detelar o arquivo
+    # Deletar o arquivo
     try:
         os.remove(audio_path)
         if os.path.exists(mp3_path):
@@ -124,7 +124,21 @@ def processar_audio(instance:str, message_id:str, ia_infos) -> str:
     return audio_transcript
 
 def send_message(instance:str, lead_phone:str, message:str, delay:int) -> dict:
-    ''''''
+    url = host+"message/sendText/"+instance
+    body = {
+        "number": lead_phone,
+        "options": {
+            "delay": int(delay)*1000,
+            "presence": "composing",
+            "linkPreview": False
+        },
+        "textMessage": {
+            "text": str(message)
+        }
+    }
+
+    data = post_request(url, body)
+    return data
 
 def post_request(url:str, body:dict, max_retries:int = 5, wait_seconds:int = 5) -> dict:
     attemp = 0
